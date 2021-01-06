@@ -23,7 +23,7 @@ class Command {
      * @param string $command
      * @return mixed
      */
-    public function sendCommand($command) {
+    public function runCommand($command) {
         $data = array(
             CURLOPT_POSTFIELDS => "$command"
         );

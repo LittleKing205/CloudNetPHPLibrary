@@ -28,7 +28,12 @@ class AuthHandler {
      * @return boolean
      */
     public function isAuthenticated() {
-        return isset($_SESSION["CloudNetLibrary_Cookies_File"]);
+        if (isset($_SESSION["CloudNetLibrary_Cookies_File"])) {
+            if (file_exists($_SESSION["CloudNetLibrary_Cookies_File"])) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**

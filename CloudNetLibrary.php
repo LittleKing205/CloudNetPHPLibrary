@@ -22,11 +22,7 @@ class CloudNetLibrary {
      * @param string $tmpDir
      */
     public function __construct($base_url, $version, $user, $password, $tmpDir) {
-        require_once 'Utils/CurlHandler.php';
-        require_once 'Utils/AuthHandler.php';
-        require_once 'Endpoints/Services.php';
-        require_once 'Endpoints/Command.php';
-        
+        spl_autoload_register(array($this, "cloudnetautoloader"));
         $this->base_url = $base_url;
         $this->version = $version;
         $this->tmpDir = $tmpDir;
@@ -66,6 +62,13 @@ class CloudNetLibrary {
     public function close() {
         unlink($_SESSION["CloudNetLibrary_Cookies_File"]);
         unset($_SESSION["CloudNetLibrary_Cookies_File"]);
+    }
+    
+    public function cloudnetautoloader($class) {
+        $class = preg_replace("#CloudNetLibrary#", "", $class, 1);
+        $class = substr($class, 1, strlen($class)-1);
+        $class = str_replace("\\", "/", $class);
+        require_once __DIR__ . "\\" . $class . ".php";
     }
 }
 

@@ -1,9 +1,8 @@
 <?php
-namespace CloudNetLibrary\Functions;
+namespace CloudNetLibrary\Endpoints;
 
 use CloudNetLibrary\CloudNetLibrary;
 use CloudNetLibrary\Utils\CurlHandler;
-use CloudNetLibrary\Endpoints\Command;
 
 /**
  * Der Services Endpoint des CloudNet Server Systems
@@ -42,7 +41,7 @@ class Services {
      * Permission: cloudnet.http.v1.command
      * @param String $taskName
      */
-    public function createService($taskName, $ammount = 1 ,$startImmediately = false) {
+    public function createService($taskName, $ammount = 1, $startImmediately = false) {
         $startParam = "";
         if ($startImmediately)
             $startParam = " --start";
@@ -101,6 +100,10 @@ class Services {
         return $this->getCommandEndpoint()->sendCommand("service ".$serviceName." command ".$command);
     }
     
+    /**
+     * Startet eine Command Class instance wenn noch keine erstellt wurde.
+     * @return \CloudNetLibrary\Endpoints\Command
+     */
     private function getCommandEndpoint() {
         if ($this->commandEndpoint == null)
             $this->commandEndpoint = new Command($this->library);
