@@ -3,6 +3,7 @@ namespace CloudNetLibrary\Endpoints;
 
 use CloudNetLibrary\CloudNetLibrary;
 use CloudNetLibrary\Utils\CurlHandler;
+use CloudNetLibrary\Interfaces\Service;
 
 /**
  * Der Services Endpoint des CloudNet Server Systems
@@ -21,19 +22,23 @@ class Services {
     
     /**
      * Erhalte alle Services mit sämtlichen Informationen
-     * @return mixed
+     * @return Service[]
      */
     public function listServices() {
-        return json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/services"), true);
+        $ret = array();
+        $datas = json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/services"), true);
+        foreach ($datas as $data)
+            $ret[] = new Service($data);
+        return $ret;
     }
     
     /**
      * Erhalte alle Informationen eines Services
      * @param string $uuid
-     * @return mixed
+     * @return Service
      */
     public function getService($uuid) {
-        return json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/services/".$uuid), true);
+        return new Service(json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/services/".$uuid), true));
     }
     
     /**
@@ -70,12 +75,22 @@ class Services {
     
     /**
      * Startet einen Servie neu
-     * Permission: cloudnet.http.v1.services.operation
+     * Permission: cloudnet.http.v1.command
      * @param string $uuid
      * @return mixed
      */
     public function restartService($uuid) {
-        return json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/services/".$uuid."/restart"), true);
+        return $this->getCommandEndpoint()->sendCommand("service ".$this->getService($uuid)->getServiceName()." restart");
+    }
+    
+    /**
+     * Löscht einen Servie neu
+     * Permission: cloudnet.http.v1.services.operation
+     * @param string $uuid
+     * @return mixed
+     */
+    public function deleteService($uuid) {
+        return json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/services/".$uuid."/delete"), true);
     }
     
     /**

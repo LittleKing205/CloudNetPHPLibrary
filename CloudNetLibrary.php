@@ -22,7 +22,7 @@ class CloudNetLibrary {
      * @param string $tmpDir
      */
     public function __construct($base_url, $version, $user, $password, $tmpDir) {
-        spl_autoload_register(array($this, "cloudnetautoloader"));
+        $this->loadClasses();
         $this->base_url = $base_url;
         $this->version = $version;
         $this->tmpDir = $tmpDir;
@@ -30,6 +30,15 @@ class CloudNetLibrary {
         $this->authHandler = new AuthHandler($this, $user, $password);
         $this->authHandler->auth();
     }
+    
+    public static function loadClasses() {
+        require_once __DIR__ . "/Utils/AuthHandler.php";
+        require_once __DIR__ . "/Utils/CurlHandler.php";
+        require_once __DIR__ . "/Endpoints/Command.php";
+        require_once __DIR__ . "/Endpoints/Services.php";
+        require_once __DIR__ . "/Interfaces/Service.php";
+        require_once __DIR__ . "/Interfaces/Player.php";
+    } 
     
     /**
      * @return AuthHandler

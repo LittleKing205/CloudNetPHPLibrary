@@ -40,16 +40,14 @@ class AuthHandler {
      * return string[]
      */
     public function getAuthData() {
-        //if ($this->isAuthenticated()) {
         return array(
             CURLOPT_COOKIEFILE => $_SESSION["CloudNetLibrary_Cookies_File"],
             CURLOPT_USERPWD => $this->user . ':' . $this->password
         );
-        //}
     }
     
     public function auth() {
-        if (!($this->isAuthenticated())) {
+        if ($this->isAuthenticated() == false) {
             $cookie_file = tempnam ($this->library->getTmpDir(), "CURLCOOKIE");
             $_SESSION["CloudNetLibrary_Cookies_File"] = $cookie_file;
             CurlHandler::auth($this->library->getBaseUrl()."/auth", array(
