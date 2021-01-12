@@ -59,14 +59,26 @@ class User {
         return $this->getRawJsonObject()["potency"];
     }
     
-    /* TODO: Add UserPermission Interface */
+    /**
+     * @return Permission[]
+     */
     public function getUserPermissions() {
-        return $this->getRawJsonObject()["permissions"];
+        $ret = array();
+        foreach($this->getRawJsonObject()["permissions"] as $permission)
+            $ret[] = new Permission($permission);
+        return $ret;
     }
     
     /* TODO: Add UserGroupPermission Interface */
     public function getGroupPermissions() {
         return $this->getRawJsonObject()["groupPermissions"];
+    }
+    
+    /**
+     * @return Permission[]
+     */
+    public function getAllIndividualPermissions() {
+        return $this->getUserPermissions();
     }
     
     /**

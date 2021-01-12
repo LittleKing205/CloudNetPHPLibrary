@@ -3,6 +3,10 @@ namespace CloudNetLibrary;
 
 use CloudNetLibrary\Utils\AuthHandler;
 
+/**
+ * Main Constructor Class. This is Needed for the Endpoints to Work 
+ * @author pascal.schreiber
+ */
 class CloudNetLibrary {
 
     /** @var AuthHandler */
