@@ -69,9 +69,12 @@ class User {
         return $ret;
     }
     
-    /* TODO: Add UserGroupPermission Interface */
+    /** @return Permission[][] */
     public function getGroupPermissions() {
-        return $this->getRawJsonObject()["groupPermissions"];
+        $ret = array();
+        foreach ($this->getRawJsonObject()["groupPermissions"] as $groupName => $permission)
+            $ret[$groupName][] = new Permission($permission);
+        $ret;
     }
     
     /**

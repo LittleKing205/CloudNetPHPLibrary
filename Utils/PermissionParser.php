@@ -14,10 +14,10 @@ class PermissionParser {
         foreach ($serverGroupArray as $row) {
             $matches = null;
             if (preg_match("#^\* (.*) \| ([0-9]{1,3})$#", $row, $matches)) {
-                $groupIndex++;
+                $groupIndex = $matches[1];
                 $permissionReadMode = false;
                 $permissionGroupReadMode = false;
-                $groupData[$groupIndex]["name"] = $matches[1];
+                //$groupData[$groupIndex]["name"] = $matches[1];
                 $groupData[$groupIndex]["potency"] = $matches[2];
             }
             if (preg_match("#^Default: (true|false) \| SortId: ([0-9]{1,4})$#", $row, $matches)) {
