@@ -27,7 +27,7 @@ class Command {
         $data = array(
             CURLOPT_POSTFIELDS => "$command"
         );
-        return json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/command", "POST", $data), true);
+        return json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/command", "POST", $data), true)["receivedMessages"];
     }
 }
 
