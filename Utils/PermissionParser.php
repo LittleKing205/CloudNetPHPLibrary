@@ -1,41 +1,73 @@
 <?php
 namespace CloudNetLibrary\Utils;
 
-
-use CloudNetLibrary\CloudNetLibrary;
+use CloudNetLibrary\Interfaces\Permission;
 
 class PermissionParser {
     
-    /** @var CloudNetLibrary */
-    private $library;
-    
-    /**
-     * @param CloudNetLibrary $library
-     * @param string $user
-     * @param string $password
-     */
-    public function __construct($library) {
-        $this->library = $library;
+    public static function parse($serverGroupArray) {
+        $groupData = array();
+        $permissionReadMode = false;
+        $permissionGroupReadMode = false;
+        $groupIndex = -1;
+        $permGroupTmpName = "";
+        foreach ($serverGroupArray as $row) {
+            $matches = null;
+            if (preg_match("#^\* (.*) \| ([0-9]{1,3})$#", $row, $matches)) {
+                $groupIndex++;
+                $permissionReadMode = false;
+                $permissionGroupReadMode = false;
+                $groupData[$groupIndex]["name"] = $matches[1];
+                $groupData[$groupIndex]["potency"] = $matches[2];
+            }
+            if (preg_match("#^Default: (true|false) \| SortId: ([0-9]{1,4})$#", $row, $matches)) {
+                $groupData[$groupIndex]["default"] = ($matches[1] = "true") ? true : false;
+                $groupData[$groupIndex]["sortId"] = intval($matches[2]);
+            }
+            if (preg_match("#^Prefix: (.*)$#", $row, $matches)) {
+                $groupData[$groupIndex]["prefix"] = $matches[1];
+            }
+            if (preg_match("#^Color: (.*)$#", $row, $matches)) {
+                $groupData[$groupIndex]["color"] = $matches[1];
+            }
+            if (preg_match("#^Suffix: (.*)$#", $row, $matches)) {
+                $groupData[$groupIndex]["suffix"] = $matches[1];
+            }
+            if (preg_match("#^Display: (.*)$#", $row, $matches)) {
+                $groupData[$groupIndex]["display"] = $matches[1];
+            }
+            if (preg_match("#Permissions:#", $row, $matches)) {
+                $permissionReadMode = true;
+                $permissionGroupReadMode = false;
+            }
+            if (preg_match("#^\* (.\w*)$#", $row, $matches)) {
+                $permGroupTmpName = $matches[1];
+                $permissionReadMode = false;
+                $permissionGroupReadMode = true;
+            }
+            if (preg_match("#^- (.*):([0-9]{1,3}) \| Timeout (.*)$#", $row, $matches) && $permissionReadMode) {
+                if ($matches[3] == "LIFETIME")
+                    $tmpTime = -1;
+                else
+                    $tmpTime = \DateTimeImmutable::createFromFormat('d.m.Y H:i:s', '13.01.2021 22:17:53')->getTimestamp()*1000 - round(microtime(true) * 1000);
+                $groupData[$groupIndex]["permissions"][] = new Permission(array(
+                    "name" => $matches[1],
+                    "potency" => intval($matches[2]),
+                    "timeOutMillis" => $tmpTime
+                ));
+            }
+            if (preg_match("#^- (.*):([0-9]{1,3}) \| Timeout (.*)$#", $row, $matches) && $permissionGroupReadMode) {
+                if ($matches[3] == "LIFETIME")
+                    $tmpTime = -1;
+                else
+                    $tmpTime = \DateTimeImmutable::createFromFormat('d.m.Y H:i:s', $matches[3])->getTimestamp()*1000 - round(microtime(true) * 1000);
+                $groupData[$groupIndex]["groupPermissions"][$permGroupTmpName][] = new Permission(array(
+                    "name" => $matches[1],
+                    "potency" => intval($matches[2]),
+                    "timeOutMillis" => $tmpTime
+                ));
+            }
+        }
+        return $groupData;
     }
-    
-    /*
-        * Admin | 100
-        Inherits: []
-        Default: false | SortId: 10
-        Prefix: §4Admin §8| §7
-        Color: [color]7
-        Suffix: §f
-        Display: §4
-        Permissions:
-        - web.site:0 | Timeout LIFETIME
-        
-        * Proxy
-        - *:0 | Timeout LIFETIME
-     */
-    
-    /**
-     *      preg_match #^\* (.*) \| ([0-9]{1,3})$#    // [1] Gruppen name      [2] Potency
-     *      preg match #^- (.*):[0-9]{1,3} \| Timeout (.*)$#    // [1] Permission Name      [2] Porency     [3] Timeout  (LIFETIME)
-     *      preg_match #^\* (.\w*)$#     // [1] Group Permission Name
-     */
 }
