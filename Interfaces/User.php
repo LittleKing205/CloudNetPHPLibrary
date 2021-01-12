@@ -1,6 +1,10 @@
 <?php
 namespace CloudNetLibrary\Interfaces;
 
+use CloudNetLibrary\CloudNetLibrary;
+use CloudNetLibrary\Endpoints\Command;
+use CloudNetLibrary\Utils\PermissionParser;
+
 class User {
     private $rawData;
     
@@ -78,10 +82,16 @@ class User {
     }
     
     /**
+     * @var CloudNetLibrary $CloudNetLibrary
      * @return Permission[]
      */
-    public function getAllIndividualPermissions() {
-        return $this->getUserPermissions();
+    public function getAllIndividualPermissions($CloudNetLibrary) {
+        $cmd = new Command($CloudNetLibrary);
+        $cloudPerms = PermissionParser::parse($cmd->runCommand("perms group"));
+        $perms = $this->getUserPermissions();
+        foreach ($this->getUserGroups() as $group)
+            $perms = array_replace_recursive($perms, $cloudPerms[$group]["permissions"]);
+        return $perms;
     }
     
     /**
