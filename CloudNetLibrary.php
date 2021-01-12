@@ -34,10 +34,16 @@ class CloudNetLibrary {
     public static function loadClasses() {
         require_once __DIR__ . "/Utils/AuthHandler.php";
         require_once __DIR__ . "/Utils/CurlHandler.php";
+        
         require_once __DIR__ . "/Endpoints/Command.php";
+        require_once __DIR__ . "/Endpoints/Database.php";
         require_once __DIR__ . "/Endpoints/Services.php";
-        require_once __DIR__ . "/Interfaces/Service.php";
+        
         require_once __DIR__ . "/Interfaces/Player.php";
+        require_once __DIR__ . "/Interfaces/Permission.php";
+        require_once __DIR__ . "/Interfaces/Service.php";
+        require_once __DIR__ . "/Interfaces/User.php";
+        require_once __DIR__ . "/Interfaces/UserGroup.php";
     } 
     
     /**
@@ -77,7 +83,7 @@ class CloudNetLibrary {
         $class = preg_replace("#CloudNetLibrary#", "", $class, 1);
         $class = substr($class, 1, strlen($class)-1);
         $class = str_replace("\\", "/", $class);
-        require_once __DIR__ . "\\" . $class . ".php";
+        include __DIR__ . "\\" . $class . ".php";
     }
 }
 
