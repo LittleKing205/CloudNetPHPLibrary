@@ -90,7 +90,7 @@ class User {
         $cloudPerms = PermissionParser::parse($cmd->runCommand("perms group"));
         $perms = $this->getUserPermissions();
         foreach ($this->getUserGroups() as $group)
-            $perms = array_replace_recursive($perms, $cloudPerms[$group]["permissions"]);
+            $perms = array_replace_recursive($perms, $cloudPerms[$group->getName()]["permissions"]);
         return $perms;
     }
     
