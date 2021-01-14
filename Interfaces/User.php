@@ -89,8 +89,10 @@ class User {
         $cmd = new Command($CloudNetLibrary);
         $cloudPerms = PermissionParser::parse($cmd->runCommand("perms group"));
         $perms = $this->getUserPermissions();
-        foreach ($this->getUserGroups() as $group)
-            $perms = array_replace_recursive($perms, $cloudPerms[$group->getName()]["permissions"]);
+        foreach ($this->getUserGroups() as $group) {
+            if ($cloudPerms[$group->getName()]["permissions"] != null)
+                $perms = array_replace_recursive($perms, $cloudPerms[$group->getName()]["permissions"]);
+        }
         return $perms;
     }
     

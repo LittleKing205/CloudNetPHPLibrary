@@ -17,7 +17,7 @@ class PermissionParser {
                 $groupIndex = $matches[1];
                 $permissionReadMode = false;
                 $permissionGroupReadMode = false;
-                //$groupData[$groupIndex]["name"] = $matches[1];
+                $permGroupTmpName = "";
                 $groupData[$groupIndex]["potency"] = $matches[2];
             }
             if (preg_match("#^Default: (true|false) \| SortId: ([0-9]{1,4})$#", $row, $matches)) {
@@ -39,6 +39,7 @@ class PermissionParser {
             if (preg_match("#Permissions:#", $row, $matches)) {
                 $permissionReadMode = true;
                 $permissionGroupReadMode = false;
+                $groupData[$groupIndex]["permissions"] = array();
             }
             if (preg_match("#^\* (.\w*)$#", $row, $matches)) {
                 $permGroupTmpName = $matches[1];
@@ -57,6 +58,8 @@ class PermissionParser {
                 ));
             }
             if (preg_match("#^- (.*):([0-9]{1,3}) \| Timeout (.*)$#", $row, $matches) && $permissionGroupReadMode) {
+                if (!$groupData[$groupIndex]["groupPermissions"][$permGroupTmpName])
+                    $groupData[$groupIndex]["groupPermissions"][$permGroupTmpName] = array();
                 if ($matches[3] == "LIFETIME")
                     $tmpTime = -1;
                 else
