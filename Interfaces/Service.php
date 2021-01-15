@@ -82,6 +82,18 @@ class Service {
         return false;
     }
     
+    public function getHeapUsageMemory() {
+        return $this->rawData["processSnapshot"]["heapUsageMemory"];
+    }
+    
+    public function getMaxHeapMemory() {
+        return $this->rawData["processSnapshot"]["maxHeapMemory"];
+    }
+    
+    public function getCpuUsage() {
+        return $this->rawData["processSnapshot"]["cpuUsage"];
+    }
+    
     /**
      * @return \CloudNetLibrary\Interfaces\Player[]
      */
