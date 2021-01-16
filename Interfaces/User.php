@@ -2,8 +2,6 @@
 namespace CloudNetLibrary\Interfaces;
 
 use CloudNetLibrary\CloudNetLibrary;
-use CloudNetLibrary\Endpoints\Command;
-use CloudNetLibrary\Utils\PermissionParser;
 
 class User {
     private $rawData;
@@ -85,9 +83,7 @@ class User {
      * @var CloudNetLibrary $CloudNetLibrary
      * @return Permission[]
      */
-    public function getAllIndividualPermissions($CloudNetLibrary) {
-        $cmd = new Command($CloudNetLibrary);
-        $cloudPerms = PermissionParser::parse($cmd->runCommand("perms group"));
+    public function getAllIndividualPermissions($CloudNetLibrary, $cloudPerms) {
         $perms = $this->getUserPermissions();
         foreach ($this->getUserGroups() as $group) {
             if ($cloudPerms[$group->getName()]["permissions"] != null)
