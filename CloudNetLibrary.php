@@ -43,6 +43,7 @@ class CloudNetLibrary {
         require_once __DIR__ . "/Endpoints/Command.php";
         require_once __DIR__ . "/Endpoints/Database.php";
         require_once __DIR__ . "/Endpoints/Services.php";
+        require_once __DIR__ . "/Endpoints/SyncProxy.php";
         require_once __DIR__ . "/Endpoints/Tasks.php";
         
         require_once __DIR__ . "/Interfaces/Player.php";
