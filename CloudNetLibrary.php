@@ -25,11 +25,14 @@ class CloudNetLibrary {
      * @param string $password
      * @param string $tmpDir
      */
-    public function __construct($base_url, $version, $user, $password, $tmpDir) {
+    public function __construct($base_url, $version, $user, $password, $tmpDir = null) {
         $this->loadClasses();
         $this->base_url = $base_url;
         $this->version = $version;
-        $this->tmpDir = $tmpDir;
+        if ($tmpDir == null)
+            $this->tmpDir = sys_get_temp_dir ();
+        else
+            $this->tmpDir = $tmpDir;
         
         $this->authHandler = new AuthHandler($this, $user, $password);
         $this->authHandler->auth();
