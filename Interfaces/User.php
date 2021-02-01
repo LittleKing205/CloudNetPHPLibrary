@@ -87,7 +87,7 @@ class User {
         $perms = $this->getUserPermissions();
         foreach ($this->getUserGroups() as $group) {
             if ($cloudPerms[$group->getName()]["permissions"] != null)
-                $perms = array_replace_recursive($perms, $cloudPerms[$group->getName()]["permissions"]);
+                $perms = array_merge($perms, $cloudPerms[$group->getName()]["permissions"]);
         }
         return $perms;
     }

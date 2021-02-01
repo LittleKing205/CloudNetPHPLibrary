@@ -41,18 +41,21 @@ class CloudNetLibrary {
     public static function loadClasses() {
         require_once __DIR__ . "/Utils/AuthHandler.php";
         require_once __DIR__ . "/Utils/CurlHandler.php";
-        require_once __DIR__ . "/Utils/PermissionParser.php";
         
         require_once __DIR__ . "/Endpoints/Command.php";
         require_once __DIR__ . "/Endpoints/Database.php";
         require_once __DIR__ . "/Endpoints/Services.php";
         require_once __DIR__ . "/Endpoints/SyncProxy.php";
         require_once __DIR__ . "/Endpoints/Tasks.php";
+        require_once __DIR__ . "/Endpoints/Templates.php";
+        
+        require_once __DIR__ . "/Enums/Enviroment.php";
         
         require_once __DIR__ . "/Interfaces/Player.php";
         require_once __DIR__ . "/Interfaces/Permission.php";
         require_once __DIR__ . "/Interfaces/Service.php";
         require_once __DIR__ . "/Interfaces/Task.php";
+        require_once __DIR__ . "/Interfaces/Template.php";
         require_once __DIR__ . "/Interfaces/User.php";
         require_once __DIR__ . "/Interfaces/UserGroup.php";
         

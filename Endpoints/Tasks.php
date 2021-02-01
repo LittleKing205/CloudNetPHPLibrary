@@ -26,16 +26,23 @@ class Tasks {
     }
     
     public function getTask($task) {
-        return new Task(json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/tasks/".$task), true));
+        return new Task(json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/tasks/".strtolower($task)), true)["task"]);
     }
     
     public function deleteTask($taskName) {
-        return json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/tasks/".$taskName), true);
+        return json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/tasks/".strtolower($taskName), "DELETE"), true);
     }
     
-    /* TODO: Test it, how it works */
-    public function addTask($taskData) {
-        
+    /* TODO: Test how it's works */
+    /** 
+     * @param Task $task
+     * @return \CloudNetLibrary\Interfaces\Task
+     */
+    public function setTask($task) {
+        $data = array(
+            CURLOPT_POSTFIELDS => json_encode($task->getRawJsonObject())
+        );
+        return new Task(json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/tasks/".strtolower($task->getName()), "POST", $data), true)["task"]);
     }
 }
 

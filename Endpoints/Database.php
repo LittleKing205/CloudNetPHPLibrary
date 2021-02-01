@@ -48,7 +48,7 @@ class Database {
         $ret = array();
         foreach ($this->getTable("cloudnet_permission_users") as $user)
             $ret[] = new User($user);
-            return $ret;
+        return $ret;
     }
     
     /**
