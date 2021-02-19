@@ -28,7 +28,7 @@ class Permissions {
         $ret = array();
         foreach ($datas as $data) {
             $ret[$data["name"]]["potency"] = $data["potency"];
-            $ret[$data["name"]]["default"] = ($data["default"] = 1) ? true : false;;
+            $ret[$data["name"]]["default"] = $data["defaultGroup"];
             $ret[$data["name"]]["sortId"] = $data["sortId"];
             $ret[$data["name"]]["prefix"] = $data["prefix"];
             $ret[$data["name"]]["color"] = $data["color"];
