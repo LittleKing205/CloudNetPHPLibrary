@@ -27,6 +27,7 @@ class Permissions {
         $datas = json_decode(CurlHandler::run($this->library->getAuthHandler(), $this->library->getBaseUrl()."/permissions/"), true);
         $ret = array();
         foreach ($datas as $data) {
+            $ret[$data["name"]]["name"] = $data["name"];
             $ret[$data["name"]]["potency"] = $data["potency"];
             $ret[$data["name"]]["default"] = $data["defaultGroup"];
             $ret[$data["name"]]["sortId"] = $data["sortId"];
