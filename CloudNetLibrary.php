@@ -53,6 +53,7 @@ class CloudNetLibrary {
         
         require_once __DIR__ . "/Interfaces/Player.php";
         require_once __DIR__ . "/Interfaces/Permission.php";
+        require_once __DIR__ . "/Interfaces/PermissionGroup.php";
         require_once __DIR__ . "/Interfaces/Service.php";
         require_once __DIR__ . "/Interfaces/Task.php";
         require_once __DIR__ . "/Interfaces/Template.php";
