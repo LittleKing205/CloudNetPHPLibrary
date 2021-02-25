@@ -86,9 +86,6 @@ class User {
     public function getAllIndividualPermissions($CloudNetLibrary, $cloudPerms) {
         $perms = $this->getUserPermissions();
         foreach ($this->getUserGroups() as $group) {
-            //if ($cloudPerms[$group->getName()]["permissions"] != null)
-            //    $perms = array_merge($perms, $cloudPerms[$group->getName()]["permissions"]);
-            print_r ($group);
             $perms = array_merge($perms, $cloudPerms[$group->getName()]->getPermissions());
         }
         return $perms;
